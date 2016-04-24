@@ -230,8 +230,8 @@ class FeedEntry(object):
 		
 		if self.__rss_image_url:
 			image_subelement=etree.SubElement(entry, "{%s}content" % ("media"))
-			image_subelement.url=self.__rss_image_url
-			image_subelement.medium="image"
+			image_subelement.attrib["url"]=self.__rss_image_url
+			image_subelement.attrib["medium"]="image"
 		
 		return entry
 
