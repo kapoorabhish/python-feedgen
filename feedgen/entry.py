@@ -40,6 +40,7 @@ class FeedEntry(object):
 		self.__atom_published   = None
 		self.__atom_source      = None
 		self.__atom_rights      = None
+		self.__atom_imgage      = None
 
 		# RSS
 		self.__rss_author      = None
@@ -53,7 +54,7 @@ class FeedEntry(object):
 		self.__rss_pubDate     = None
 		self.__rss_source      = None
 		self.__rss_title       = None
-
+		self.__rss_image_url   = None
 		# Extension list:
 		self.__extensions = {}
 
@@ -226,7 +227,12 @@ class FeedEntry(object):
 			for ext in self.__extensions.values() or []:
 				if ext.get('rss'):
 					ext['inst'].extend_rss(entry)
-
+		
+		if self.__rss_image_url:
+			image_subelement=etree.SubElement(entry, "{%s}content" % ("media"))
+			image_subelement.url=self.__rss_image_url
+			image_subelement.medium="image"
+		
 		return entry
 
 
@@ -624,7 +630,13 @@ class FeedEntry(object):
 			self.__rss_ttl = int(ttl)
 		return self.__rss_ttl
 
-
+	def image(self,url):
+		'''Get or set image URL
+		:param url: URL of image
+		'''
+		self.__rss_image_url=url
+		return self.__rss_image_url
+	
 	def load_extension(self, name, atom=True, rss=True):
 		'''Load a specific extension by name.
 
